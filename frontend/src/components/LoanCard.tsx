@@ -36,7 +36,10 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, actions, role }) => {
   // Close the dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false); // Close the dropdown
       }
     };
@@ -51,41 +54,54 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, actions, role }) => {
 
   // Define actions based on role
   const actionOptions =
-    role === "verifier" ? ["Verify", "Reject"] : role === "admin" ? ["Accept", "Reject"] : [];
+    role === "verifier"
+      ? ["Verify", "Reject"]
+      : role === "admin"
+      ? ["Accept", "Reject"]
+      : [];
 
   // Function to handle action selection and update status via API
   const handleAction = async (action: string) => {
     let updatedStatus = "";
 
-  // Set the updated status based on the action
-  switch (action) {
-    case "Verify":
-      updatedStatus = "VERIFIED";
-      break;
-    case "Reject":
-      updatedStatus = "REJECTED";
-      break;
-    case "Accept":
-      updatedStatus = "APPROVED";
-      break;
-    default:
-      return;
-  }
+    // Set the updated status based on the action
+    switch (action) {
+      case "Verify":
+        updatedStatus = "VERIFIED";
+        break;
+      case "Reject":
+        updatedStatus = "REJECTED";
+        break;
+      case "Accept":
+        updatedStatus = "APPROVED";
+        break;
+      default:
+        return;
+    }
     try {
       if (role === "verifier") {
         // Verifier API call
-        await axios.patch(`https://credit-sea-flax.vercel.app/loans/status-verifier?_id=${loan.id}`, {
-          status: updatedStatus,
-          loanOfficer: "Jon Okoh", // Passing loan officer as required
-        });
-        console.log(`Verifier updated loan ID: ${loan.id} status to ${updatedStatus}`);
+        await axios.patch(
+          `https://credit-sea-beige.vercel.app/loans/status-verifier?_id=${loan.id}`,
+          {
+            status: updatedStatus,
+            loanOfficer: "Jon Okoh", // Passing loan officer as required
+          }
+        );
+        console.log(
+          `Verifier updated loan ID: ${loan.id} status to ${updatedStatus}`
+        );
       } else if (role === "admin") {
         // Admin API call
-        await axios.patch(`https://credit-sea-flax.vercel.app/loans/status-admin?_id=${loan.id}`, {
-          status: updatedStatus,
-          
-        });
-        console.log(`Admin updated loan ID: ${loan.id} status to ${updatedStatus}`);
+        await axios.patch(
+          `https://credit-sea-beige.vercel.app/loans/status-admin?_id=${loan.id}`,
+          {
+            status: updatedStatus,
+          }
+        );
+        console.log(
+          `Admin updated loan ID: ${loan.id} status to ${updatedStatus}`
+        );
       }
 
       // Update the local status immediately after a successful API call

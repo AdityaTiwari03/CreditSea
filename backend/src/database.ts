@@ -8,7 +8,7 @@ dotenv.config();
 // Function to connect to MongoDB
 export const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGO_URI; // Access the MongoDB URI from environment variables
+    const mongoURI = process.env.MONGO_U RI; // Access the MongoDB URI from environment variables
 
     if (!mongoURI) {
       throw new Error('MongoDB connection string (MONGO_URI) is missing in environment variables');
