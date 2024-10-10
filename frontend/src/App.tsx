@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './App.css';
+import "./App.css";
 import LoanList from "./components/LoanList.tsx";
 import Modal from "./components/Model.tsx";
 
@@ -16,12 +16,12 @@ interface LoanFormData {
 const App: React.FC = () => {
   const [showLoanForm, setShowLoanForm] = useState(false); // To toggle the loan form
   const [formData, setFormData] = useState<LoanFormData>({
-    fullName: '',
-    loanAmount: '',
-    loanTenure: '',
-    employmentStatus: '',
-    reasonForLoan: '',
-    employmentAddress: ''
+    fullName: "",
+    loanAmount: "",
+    loanTenure: "",
+    employmentStatus: "",
+    reasonForLoan: "",
+    employmentAddress: "",
   });
 
   // Function to toggle the form on "Get a Loan" click
@@ -97,7 +97,9 @@ const App: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-gray-500 uppercase text-sm font-semibold">Deficit</h3>
+                <h3 className="text-gray-500 uppercase text-sm font-semibold">
+                  Deficit
+                </h3>
                 <p className="text-green-500 text-2xl font-bold">₦ 0.0</p>
               </div>
             </div>
@@ -114,19 +116,31 @@ const App: React.FC = () => {
           {/* Action Buttons (Tabs) */}
           <div className="flex space-x-2 mb-4">
             <button
-              className={`flex-1 py-2 px-4 rounded-lg shadow ${activeTab === "borrow" ? "bg-green-100 text-green-700" : "bg-white text-gray-700 border"}`}
+              className={`flex-1 py-2 px-4 rounded-lg shadow ${
+                activeTab === "borrow"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-white text-gray-700 border"
+              }`}
               onClick={() => setActiveTab("borrow")}
             >
               Borrow Cash
             </button>
             <button
-              className={`flex-1 py-2 px-4 rounded-lg shadow ${activeTab === "transact" ? "bg-green-100 text-green-700" : "bg-white text-gray-700 border"}`}
+              className={`flex-1 py-2 px-4 rounded-lg shadow ${
+                activeTab === "transact"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-white text-gray-700 border"
+              }`}
               onClick={() => setActiveTab("transact")}
             >
               Transact
             </button>
             <button
-              className={`flex-1 py-2 px-4 rounded-lg shadow ${activeTab === "deposit" ? "bg-green-100 text-green-700" : "bg-white text-gray-700 border"}`}
+              className={`flex-1 py-2 px-4 rounded-lg shadow ${
+                activeTab === "deposit"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-white text-gray-700 border"
+              }`}
               onClick={() => setActiveTab("deposit")}
             >
               Deposit Cash
@@ -173,7 +187,9 @@ const App: React.FC = () => {
               </div>
             ) : (
               <div className="flex justify-center items-center h-64">
-                <h1 className="text-3xl font-semibold text-gray-500">Coming Soon</h1>
+                <h1 className="text-3xl font-semibold text-gray-500">
+                  Coming Soon
+                </h1>
               </div>
             )}
           </div>
@@ -181,85 +197,99 @@ const App: React.FC = () => {
       </div>
       {/* Loan Application Modal */}
       <Modal isVisible={showLoanForm} onClose={() => setShowLoanForm(false)}>
-      <form onSubmit={handleSubmit} className="p-8  space-y-6">
-            <h2 className="text-2xl font-bold mb-6">APPLY FOR A LOAN</h2>
+        <form onSubmit={handleSubmit} className="p-8  space-y-6">
+          <h2 className="text-2xl font-bold mb-6">APPLY FOR A LOAN</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input 
-                    type="text" 
-                    name="fullName" 
-                    placeholder="Full name as it appears on bank account" 
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-                <input 
-                    type="number" 
-                    name="loanAmount" 
-                    placeholder="How much do you need?" 
-                    value={formData.loanAmount}
-                    onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Full name as it appears on bank account"
+              value={formData.fullName}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+            <input
+              type="number"
+              name="loanAmount"
+              placeholder="How much do you need?"
+              value={formData.loanAmount}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input 
-                    type="number" 
-                    name="loanTenure" 
-                    placeholder="Loan tenure (in months)" 
-                    value={formData.loanTenure}
-                    onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-                <input 
-                    type="text" 
-                    name="employmentStatus" 
-                    placeholder="Employment status" 
-                    value={formData.employmentStatus}
-                    onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="number"
+              name="loanTenure"
+              placeholder="Loan tenure (in months)"
+              value={formData.loanTenure}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+            <input
+              type="text"
+              name="employmentStatus"
+              placeholder="Employment status"
+              value={formData.employmentStatus}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <textarea 
-                    name="reasonForLoan" 
-                    placeholder="Reason for loan" 
-                    value={formData.reasonForLoan}
-                    onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 resize-none"
-                ></textarea>
-                <input 
-                    type="text" 
-                    name="employmentAddress" 
-                    placeholder="Employment address" 
-                    value={formData.employmentAddress}
-                    onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
-                />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <textarea
+              name="reasonForLoan"
+              placeholder="Reason for loan"
+              value={formData.reasonForLoan}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 resize-none"
+            ></textarea>
+            <input
+              type="text"
+              name="employmentAddress"
+              placeholder="Employment address"
+              value={formData.employmentAddress}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+            />
+          </div>
 
-            <div className="space-y-2">
-                <label className="flex items-center space-x-2">
-                    <input type="checkbox" className="form-checkbox h-5 w-5 text-green-600" required />
-                    <span className="text-gray-700">I have read the important information and accept the terms</span>
-                </label>
+          <div className="space-y-2">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="form-checkbox h-5 w-5 text-green-600"
+                required
+              />
+              <span className="text-gray-700">
+                I have read the important information and accept the terms
+              </span>
+            </label>
 
-                <label className="flex items-center space-x-2">
-                    <input type="checkbox" className="form-checkbox h-5 w-5 text-green-600" required />
-                    <span className="text-gray-700">Any personal and credit information obtained may be disclosed...</span>
-                </label>
-            </div>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="form-checkbox h-5 w-5 text-green-600"
+                required
+              />
+              <span className="text-gray-700">
+                Any personal and credit information obtained may be disclosed...
+              </span>
+            </label>
+          </div>
 
-            <button type="submit" className="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700">
-                Submit
-            </button>
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700"
+          >
+            Submit
+          </button>
         </form>
       </Modal>
     </div>
   );
 };
-
 
 export default App;
