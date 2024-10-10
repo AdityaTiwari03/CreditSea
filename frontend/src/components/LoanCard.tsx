@@ -14,98 +14,64 @@ interface LoanCardProps {
   role?: "verifier" | "admin"; // Role is optional
 }
 
-// Function to return status color based on loan status
+// Function to assign a color class based on loan status
 const getStatusColor = (status: string): string => {
-  switch (status) {
-    case "APPROVED":
-      return "bg-blue-500 text-white";
-    case "PENDING":
-      return "bg-yellow-500 text-white";
-    case "REJECTED":
-      return "bg-red-500 text-white";
-    default:
-      return "bg-gray-500 text-white";
-  }
+  const colorMap: Record<string, string> = {
+    APPROVED: "bg-blue-500 text-white",
+    PENDING: "bg-yellow-500 text-white",
+    REJECTED: "bg-red-500 text-white",
+  };
+  return colorMap[status] || "bg-gray-500 text-white";
 };
 
 const LoanCard: React.FC<LoanCardProps> = ({ loan, actions, role }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [status, setStatus] = useState(loan.status); // Local state for status
-  const dropdownRef = useRef<HTMLDivElement>(null); // Ref for the dropdown
+  const [status, setStatus] = useState(loan.status); // Local state for status management
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close the dropdown if clicked outside
+  // Hook to close the dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false); // Close the dropdown
+    const closeDropdown = (event: MouseEvent) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setDropdownOpen(false);
       }
     };
 
-    // Add event listener for clicks
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", closeDropdown);
     return () => {
-      // Cleanup the event listener when the component is unmounted
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", closeDropdown);
     };
-  }, [dropdownRef]);
+  }, []);
 
-  // Define actions based on role
-  const actionOptions =
+  const actionsByRole =
     role === "verifier"
       ? ["Verify", "Reject"]
       : role === "admin"
       ? ["Accept", "Reject"]
       : [];
 
-  // Function to handle action selection and update status via API
-  const handleAction = async (action: string) => {
-    let updatedStatus = "";
+  const handleActionClick = async (action: string) => {
+    let newStatus = "";
 
-    // Set the updated status based on the action
-    switch (action) {
-      case "Verify":
-        updatedStatus = "VERIFIED";
-        break;
-      case "Reject":
-        updatedStatus = "REJECTED";
-        break;
-      case "Accept":
-        updatedStatus = "APPROVED";
-        break;
-      default:
-        return;
-    }
+    if (action === "Verify") newStatus = "VERIFIED";
+    else if (action === "Reject") newStatus = "REJECTED";
+    else if (action === "Accept") newStatus = "APPROVED";
+
+    if (!newStatus) return;
+
     try {
-      if (role === "verifier") {
-        // Verifier API call
-        await axios.patch(
-          `https://credit-sea-beige.vercel.app/loans/status-verifier?_id=${loan.id}`,
-          {
-            status: updatedStatus,
-            loanOfficer: "Jon Okoh", // Passing loan officer as required
-          }
-        );
-        console.log(
-          `Verifier updated loan ID: ${loan.id} status to ${updatedStatus}`
-        );
-      } else if (role === "admin") {
-        // Admin API call
-        await axios.patch(
-          `https://credit-sea-beige.vercel.app/loans/status-admin?_id=${loan.id}`,
-          {
-            status: updatedStatus,
-          }
-        );
-        console.log(
-          `Admin updated loan ID: ${loan.id} status to ${updatedStatus}`
-        );
-      }
+      const url =
+        role === "verifier"
+          ? `https://credit-sea-beige.vercel.app/loans/status-verifier?_id=${loan.id}`
+          : `https://credit-sea-beige.vercel.app/loans/status-admin?_id=${loan.id}`;
+      const payload =
+        role === "verifier"
+          ? { status: newStatus, loanOfficer: "Jon Okoh" }
+          : { status: newStatus };
 
-      // Update the local status immediately after a successful API call
-      setStatus(updatedStatus);
+      await axios.patch(url, payload);
+      setStatus(newStatus); // Update the local status
+      console.log(`${role} updated loan ID: ${loan.id} to ${newStatus}`);
     } catch (error) {
       console.error("Error updating loan status", error);
     }
@@ -120,7 +86,7 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, actions, role }) => {
           className="w-10 h-10 rounded-full mr-4"
         />
         <div>
-          <h3 className="text-md  font-medium">{loan.officer}</h3>
+          <h3 className="text-md font-medium">{loan.officer}</h3>
           <p className="text-sm text-gray-500">Updated 1 day ago</p>
         </div>
       </div>
@@ -130,23 +96,21 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, actions, role }) => {
         {status}
       </span>
 
-      {/* Conditionally render action button only if actions is true and role is provided */}
       {actions && role && (
         <div className="relative" ref={dropdownRef}>
           <button
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+            onClick={() => setDropdownOpen((prev) => !prev)}
             className="ml-4 w-10 h-10 flex items-center justify-center rounded-full text-gray-700 hover:bg-gray-300 focus:outline-none"
           >
             &#x22EE; {/* Vertical three dots */}
           </button>
 
-          {/* Dropdown menu */}
           {dropdownOpen && (
             <ul className="absolute right-0 mt-2 z-10 bg-white shadow-md rounded-md w-40">
-              {actionOptions.map((action) => (
+              {actionsByRole.map((action) => (
                 <li
                   key={action}
-                  onClick={() => handleAction(action)}
+                  onClick={() => handleActionClick(action)}
                   className="cursor-pointer px-4 py-2 hover:bg-gray-100"
                 >
                   {action}

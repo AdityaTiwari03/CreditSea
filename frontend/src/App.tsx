@@ -43,7 +43,7 @@ const App: React.FC = () => {
     e.preventDefault();
 
     // Make an API call on form submission
-    const idNumber = 12140970; // Make sure idNumber is present in formData
+    const idNumber = 12140090; // Make sure idNumber is present in formData
     const apiUrl = `https://credit-sea-beige.vercel.app/loans?idNumber=${idNumber}`;
     try {
       const response = await fetch(apiUrl, {
@@ -75,7 +75,7 @@ const App: React.FC = () => {
           {/* Balance Display Section */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center space-x-4">
-              <div className="bg-green-500 text-white p-4 rounded-full">
+              <div className="bg-green-800 text-white p-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -100,7 +100,7 @@ const App: React.FC = () => {
                 <h3 className="text-gray-500 uppercase text-sm font-semibold">
                   Deficit
                 </h3>
-                <p className="text-green-500 text-2xl font-bold">₦ 0.0</p>
+                <p className="text-green-800 text-2xl font-bold">₦ 0.0</p>
               </div>
             </div>
 
@@ -115,43 +115,45 @@ const App: React.FC = () => {
 
           {/* Action Buttons (Tabs) */}
           <div className="flex space-x-2 mb-4">
-            <button
-              className={`flex-1 py-2 px-4 rounded-lg shadow ${
-                activeTab === "borrow"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-white text-gray-700 border"
-              }`}
-              onClick={() => setActiveTab("borrow")}
-            >
-              Borrow Cash
-            </button>
-            <button
-              className={`flex-1 py-2 px-4 rounded-lg shadow ${
-                activeTab === "transact"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-white text-gray-700 border"
-              }`}
-              onClick={() => setActiveTab("transact")}
-            >
-              Transact
-            </button>
-            <button
-              className={`flex-1 py-2 px-4 rounded-lg shadow ${
-                activeTab === "deposit"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-white text-gray-700 border"
-              }`}
-              onClick={() => setActiveTab("deposit")}
-            >
-              Deposit Cash
-            </button>
+            <div className="flex w-full">
+              <button
+                className={`flex-1 py-2 px-4 rounded-lg shadow ${
+                  activeTab === "borrow"
+                    ? "bg-gray-300 text-black font-bold"
+                    : "bg-white text-gray-700 border"
+                }`}
+                onClick={() => setActiveTab("borrow")}
+              >
+                Borrow Cash
+              </button>
+              <button
+                className={`flex-1 py-2 px-4 rounded-lg shadow ${
+                  activeTab === "transact"
+                    ? "bg-gray-300 text-black font-bold"
+                    : "bg-white text-gray-700 border"
+                }`}
+                onClick={() => setActiveTab("transact")}
+              >
+                Transact
+              </button>
+              <button
+                className={`flex-1 py-2 rounded-lg shadow ${
+                  activeTab === "deposit"
+                    ? "bg-gray-300 text-black font-bold"
+                    : "bg-white text-gray-700 border"
+                }`}
+                onClick={() => setActiveTab("deposit")}
+              >
+                Deposit Cash
+              </button>
+            </div>
           </div>
 
           {/* Search Bar */}
-          <div className="relative mb-4">
+          <div className="relative mb-4 shadow-xl">
             <input
               type="text"
-              className="w-full border-gray-300 rounded-lg shadow p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border-gray-300 rounded-lg shadow p-3 pl-10 focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="Search for loans"
             />
             <svg

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LoanCard from "./LoanCard.tsx";
 
-// Define the loan type
 interface Loan {
   id: number;
   officer: string;

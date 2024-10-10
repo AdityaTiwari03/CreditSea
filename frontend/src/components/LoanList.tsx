@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import LoanCard from "./LoanCard.tsx";
 
-// Define the loan type
+// Define the Loan type
 interface Loan {
   id: number;
   officer: string;
@@ -12,57 +12,64 @@ interface Loan {
 }
 
 const LoanList: React.FC = () => {
-  const { officerId } = useParams<{ officerId: string }>(); // Extract officerId from the URL
+  const { officerId } = useParams<{ officerId: string }>(); // Access officerId from URL
   const [loans, setLoans] = useState<Loan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch loans on component mount
   useEffect(() => {
-    const fetchLoans = async () => {
+    async function loadLoans() {
       try {
         const response = await fetch(
-          `https://credit-sea-beige.vercel.app/loans/id?idNumber=${12140970}`
+          `https://credit-sea-beige.vercel.app/loans/id?idNumber=${12140090}`
         );
-        // console.log(response)
+
         if (!response.ok) {
-          throw new Error("Failed to fetch loans");
+          throw new Error("Failed to retrieve loan data");
         }
 
-        const data = await response.json();
-        // Mapping backend data to frontend format
-        // console.log(data)
-        const updated_data = data.map((loan) => ({
-          id: loan._id, // Using _id from backend as id
-          officer: loan.loanOfficer, // Mapping loanOfficer to officer
+        const result = await response.json();
+
+        // Transforming API response to match component requirements
+        const transformedLoans = result.map((loan) => ({
+          id: loan._id, // Use _id for the loan id
+          officer: loan.loanOfficer, // Mapping backend loanOfficer to officer
           amount: new Intl.NumberFormat("en-IN", {
             style: "currency",
             currency: "INR",
-          }).format(loan.loanAmount), // Formatting loanAmount as Indian currency
+          }).format(loan.loanAmount), // Format loanAmount into INR currency
           date: new Date(loan.createdAt).toLocaleDateString("en-IN", {
             month: "long",
             day: "numeric",
             year: "numeric",
-          }), // Formatting date in Indian format
-          status: loan.status, // Mapping status
+          }), // Date formatting for Indian locale
+          status: loan.status, // Direct mapping of loan status
         }));
-        console.log(updated_data);
-        setLoans(updated_data); // Assuming the API returns an array of loans
-      } catch (err: any) {
-        setError(err.message);
+
+        setLoans(transformedLoans); // Update state with transformed data
+      } catch (error: any) {
+        setError(error.message); // Capture any fetch errors
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading after fetch completes
       }
-    };
+    }
 
-    fetchLoans();
-  }, []); // Run effect when officerId changes
+    loadLoans(); // Invoke function when component mounts
+  }, []); // Empty dependency array to mimic componentDidMount behavior
 
+  // Render loading state
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  console.log("loans", loans);
 
+  // Render error message if fetch fails
+  if (error) return <div>Error: {error}</div>;
+
+  // Debugging
+  console.log("Loans fetched:", loans);
+
+  // Render list of LoanCard components if loans exist
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4">
+    <div className="bg-white rounded-lg shadow-md p-4">
       {loans.map((loan) => (
         <LoanCard key={loan.id} loan={loan} />
       ))}

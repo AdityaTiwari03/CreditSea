@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
+// Define props interface for Modal component
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
@@ -7,32 +8,39 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null); // Reference for modal content
 
-  // Close the modal when clicking outside of the modal content
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    // Function to close modal if clicked outside of its content
+    const handleOutsideClick = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onClose(); // Trigger onClose callback
       }
     };
 
+    // Attach or remove event listener based on modal visibility
     if (isVisible) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleOutsideClick);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
 
+    // Clean up event listener on unmount or visibility change
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isVisible, onClose]);
+  }, [isVisible, onClose]); // Dependencies: visibility status and close handler
 
+  // Render null if modal is not visible
   if (!isVisible) return null;
 
+  // Modal structure
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={modalRef} className="bg-white rounded-lg p-6 min-w-[700px] min-h-[600px] shadow-lg">
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+      <div
+        ref={modalRef}
+        className="bg-white rounded-xl p-8 shadow-xl min-w-[700px] min-h-[600px]"
+      >
         {children}
       </div>
     </div>
