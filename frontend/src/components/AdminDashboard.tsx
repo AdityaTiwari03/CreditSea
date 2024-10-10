@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar.tsx";
-import LoanList from "./AdminLoanList.tsx";
+import LoanList from "./AdminLL.tsx";
 import { useParams } from "react-router-dom";
 import {
   FaTachometerAlt,

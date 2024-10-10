@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import LoanCard from "./LoanCard.tsx";
+import LoanCard from "./Card.tsx";
 
 interface Loan {
   id: number;

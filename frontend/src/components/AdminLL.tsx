@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import LoanCard from "./LoanCard.tsx";
+import LoanCard from "./Card.tsx";
 
 // Define the loan type
 interface Loan {
